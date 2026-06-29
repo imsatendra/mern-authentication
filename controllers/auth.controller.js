@@ -47,6 +47,24 @@ exports.signup = async (req, res) => {
   }
 };
 
-exports.login = (req, res) => {};
+exports.login = async (req, res) => {
+  try {
+    const { email, password } = req.body;
+    if (!email || !password) {
+      return res.status(400).json({
+        success: false,
+        message: "Email and Password are required",
+      });
+    }
+
+    const user = await User.findOne({ email });
+    if (!user) {
+      return res.status(401).json({
+        success: false,
+        message: "User is not registered",
+      });
+    }
+  } catch (error) {}
+};
 
 exports.logout = (req, res) => {};
